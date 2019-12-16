@@ -1,43 +1,40 @@
-class Phrase{
-
+class Phrase {
     constructor(phrase){
         this.phrase = phrase.toLowerCase();
     }
-    
-    addPhraseToDisplay(){
-        const phraseLetters = [...this.phrase];
-        const ul = document.querySelector("#phrase ul");
-        phraseLetters.forEach(phraseLetter => {
-            const li = document.createElement("li");
-            li.innerHTML= phraseLetter;
-            if(li.innerHtml != ""){
-                li.className +=`hide letter ${phraseLetter}`;
-            }
-            else{
-                li.className +="space";
-            }
-            
-            ul.appendChild(li);
-        });
+
+    /**
+        * Display phrase on game board
+        */
+    addPhraseToDisplay() {
+        const splitPhrase = this.phrase.split(''); 
+        for(let i = 0; i < splitPhrase.length; i++){
+            let li = document.createElement('li');
+            li.textContent = splitPhrase[i];
+            splitPhrase[i] === ' ' ? li.className = 'hide space' : li.className = `hide letter ${splitPhrase[i]}`;
+
+            document.querySelector('#phrase ul').appendChild(li);
+        }
     }
 
-    checkLetter(char){
-        const phraseLis = document.querySelector("#phrase li");
-        phraseLis.forEach(li =>{
-            if(char === li.textContent()){
-                return true;
-            }
-            else return false;
-        });
-   } 
+    /**
+        * Checks if passed letter is in phrase
+        * @param (string) letter - Letter to check
+        */
+    checkLetter(letter) {
+        return this.phrase.includes(letter);
+    }
+
+    /**
+        * Displays passed letter on screen after a match is found
+        * @param (string) letter - Letter to display
+        */
+    showMatchedLetter(letter) {
+        const matches = document.querySelectorAll(`.${letter}`);
+
+        matches.forEach((match) => {
+            match.classList.remove('hide');
+            match.classList.add('show');
+        });    
+    }
 }
-
-    showMatchedLetter(char){
-        const phraseLis = document.querySelector("#phrase li");
-        phraseLis.forEach(li =>{
-            if(char===li.textContent){
-                li.className += "show";
-                li.className -= "hide";
-            }
-        });
-    }
